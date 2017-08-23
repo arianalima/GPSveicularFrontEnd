@@ -31,32 +31,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        getUsuario();
+        getLocalizacao();
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-
     }
 
-    public void getUsuario(){
-        //IPs/endereços
-        //bernardo: http://192.168.25.55:8080/WhereverIgo/rest/UserService/
-        //ari: http://10.246.42.39:8080/UserManagement/rest/UserService/ ou 192.168.25.234
-        //leut: http://10.246.13.221:8080/WhereverIGo/rest/UsuarioService/ ou 192.168.31.191
+    public void getLocalizacao(){
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.25.234:8080/CircularGPS/rest/LocalService/")
@@ -74,9 +59,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(response.isSuccessful()){
                     ArrayList<Float> lista = response.body();
                     if(!lista.isEmpty()){
-                        LatLng sydney = new LatLng(lista.get(0), lista.get(1));
-                        mMap.addMarker(new MarkerOptions().position(sydney).title("Circular"));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                        LatLng local = new LatLng(lista.get(0), lista.get(1));
+                        mMap.addMarker(new MarkerOptions().position(local).title("Circular"));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(local));
 
                     }else{
                         Toast.makeText(getApplicationContext(),"" + response.message() ,Toast.LENGTH_LONG).show();
